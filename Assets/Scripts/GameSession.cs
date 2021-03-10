@@ -7,8 +7,7 @@ using UnityEngine.UI;
 
 public class GameSession : MonoBehaviour
 {
-
-    int playerLives = 3;
+    [SerializeField] int playerLives = 3;
     [SerializeField] int score = 0;
     [SerializeField] Text livesText;
     [SerializeField] Text scoreText;
@@ -16,8 +15,6 @@ public class GameSession : MonoBehaviour
 
     private void Awake()
     {
-
-
         int numGameSessions = FindObjectsOfType<GameSession>().Length;
         if(numGameSessions>1)
         {
@@ -33,11 +30,8 @@ public class GameSession : MonoBehaviour
     {
         livesText.text = playerLives.ToString();
         scoreText.text = score.ToString();
-
-
-
     }
-    //reset score when back at main menu
+
     private void Update()
     {
         if(SceneManager.GetActiveScene().buildIndex == 0)
@@ -54,7 +48,6 @@ public class GameSession : MonoBehaviour
         score += pointsToAdd;
         scoreText.text = score.ToString();
     }
-
 
     public void ProcessPlayerDeath()
     {
@@ -76,7 +69,6 @@ public class GameSession : MonoBehaviour
 
     private void GoToLoseScreen()
     {
-
         SceneManager.LoadScene("You Lose");
         Destroy(gameObject);
     }

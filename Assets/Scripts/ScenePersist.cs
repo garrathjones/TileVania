@@ -5,10 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class ScenePersist : MonoBehaviour
 {
-
     static int sceneIndexofTheLastScene = 0;
     private int sceneIndexAtStart;
-
 
     private void Awake()
     {
@@ -31,16 +29,11 @@ public class ScenePersist : MonoBehaviour
         {
             StartCoroutine(Singleton());
         }
-
     }
 
     IEnumerator Singleton()
     {
-
-        float yieldDuration;
-
         yield return new WaitForSecondsRealtime(Time.deltaTime);
-
         int numScenePersist = FindObjectsOfType<ScenePersist>().Length;
         if (numScenePersist > 1)
         {
@@ -53,18 +46,15 @@ public class ScenePersist : MonoBehaviour
         }
     }
 
-    // Use this for initialization
     void Start()
     {
         sceneIndexAtStart = SceneManager.GetActiveScene().buildIndex;
         sceneIndexofTheLastScene = SceneManager.GetActiveScene().buildIndex;
     }
 
-    // Update is called once per frame
     void Update()
     {
         CheckIfStillInSameScene();
-
     }
 
     private void CheckIfStillInSameScene()

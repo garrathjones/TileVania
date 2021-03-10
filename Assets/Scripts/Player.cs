@@ -5,8 +5,7 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour
 {
-    
-    //CONFIG
+
     [SerializeField] float runSpeed = 5f;
     [SerializeField] float jumpSpeed = 5f;
     [SerializeField] float climbSpeed = 5f;
@@ -16,43 +15,32 @@ public class Player : MonoBehaviour
     [SerializeField] AudioClip dieSFX;
     [SerializeField] AudioClip jumpSFX;
 
-
-    //STATE
     bool isAlive = true;
-
-    //CACHED COMPONENT REFERENCES
-    Rigidbody2D myRigidBody;   //cache of rigidBody component.  We mke ourselves an instance variable here that the palyer instance has a reference  to the rigid body. 
-                               //We make it an instance variable at the top of the class becasue we are going to use it in multiple places.  so from a scope point of view it is abailable everywhere.  
-                               // we are doing this to make it more readable 
-                               // PROCESSOR IS WAY FASTER THAN MEMORY.  so in general avoid storing and do calcs on the spot. 
-
-    Animator myAnimator;  //cache our reference to the animator.
-    CapsuleCollider2D myBodyCollieder2D;
-    BoxCollider2D myFeet;
     float gravityScaleAtStart;
 
-    //MESSABGE THEN METHODS
+    Rigidbody2D myRigidBody;   
+    Animator myAnimator; 
+    CapsuleCollider2D myBodyCollieder2D;
+    BoxCollider2D myFeet;
+
     void Start()
     {
-        myRigidBody = GetComponent<Rigidbody2D>();   // on start this is a cache
+        myRigidBody = GetComponent<Rigidbody2D>();   
         myAnimator = GetComponent<Animator>();
         myBodyCollieder2D = GetComponent<CapsuleCollider2D>();
         myFeet = GetComponent<BoxCollider2D>();
-        gravityScaleAtStart = myRigidBody.gravityScale;
-        
+        gravityScaleAtStart = myRigidBody.gravityScale;        
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        if (!isAlive) { return; } 
-        
+        if (!isAlive) { return; }         
         Run();
         ClimbLadder();
         Jump();
         FlipSprite();
         Die();
-
     }
 
     private void Run()
@@ -60,7 +48,6 @@ public class Player : MonoBehaviour
         float controlThrow = CrossPlatformInputManager.GetAxis("Horizontal"); // value is betwen -1 to 1 
         Vector2 playerVeloctiy = new Vector2(controlThrow * runSpeed, myRigidBody.velocity.y);
         myRigidBody.velocity = playerVeloctiy;
-
         bool playerHasHorizontalSpeed = Mathf.Abs(myRigidBody.velocity.x) > Mathf.Epsilon;
         myAnimator.SetBool("Running", playerHasHorizontalSpeed);         
     }
@@ -88,7 +75,6 @@ public class Player : MonoBehaviour
     private void Jump()
     {
         if(!myFeet.IsTouchingLayers(LayerMask.GetMask("Ground"))) { return; }
-        
         if (CrossPlatformInputManager.GetButtonDown("Jump"))
         {
             AudioSource.PlayClipAtPoint(jumpSFX, Camera.main.transform.position);
@@ -97,7 +83,6 @@ public class Player : MonoBehaviour
         }
 
     }
-
 
     private void FlipSprite()
     {
@@ -120,10 +105,6 @@ public class Player : MonoBehaviour
             FindObjectOfType<GameSession>().ProcessPlayerDeath();
         }
     }      
-
-
-
-
 }
 
 
